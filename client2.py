@@ -28,6 +28,5 @@ def main():
             client.send(msg.encode(FORMAT))
 
 
-
 if __name__ == "__main__":
     main()
