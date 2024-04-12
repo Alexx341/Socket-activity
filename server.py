@@ -11,6 +11,7 @@ FORMAT = "utf-8"
 DISCONNECT_MSG = "/disc"
 connected_clients = []
 def handle_client(conn, addr):
+
     connected_clients.append(conn)
     if threading.active_count() - 1 == 1:
         msg = "You're the first one connected, wait for the second player"
@@ -18,16 +19,16 @@ def handle_client(conn, addr):
     else:
 
         msg = "Both players connected"
-        for client in connected_clients:
-            print(client)
-            client.send(msg.encode(FORMAT))
+        connected_clients[0].send(msg.encode(FORMAT))
 
     
     print(f"[NEW CONNECTION] {addr} connected")
     connected = True
     while connected:
-
-        msg = conn.recv(SIZE).decode(FORMAT)
+        
+        msg = "Please input your name: "
+        conn.send(msg.encode(FORMAT))
+        name1 = conn.recv(SIZE).decode(FORMAT)
         if msg == DISCONNECT_MSG:
             connected = False
         
