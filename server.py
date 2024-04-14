@@ -16,19 +16,22 @@ def handle_client(conn, addr):
     if threading.active_count() - 1 == 1:
         msg = "You're the first one connected, wait for the second player"
         conn.send(msg.encode(FORMAT))    
-    else:
-
-        msg = "Both players connected"
-        connected_clients[0].send(msg.encode(FORMAT))
 
     
     print(f"[NEW CONNECTION] {addr} connected")
     connected = True
+    name1 = ""
+    name2 = ""
     while connected:
-        
-        msg = "Please input your name: "
-        conn.send(msg.encode(FORMAT))
-        name1 = conn.recv(SIZE).decode(FORMAT)
+        if threading.active_count() - 1 != 1:
+            msg1 = "both players connected"
+            conn.send(msg1.encode(FORMAT))    
+            if name1 == "":
+                Namemsg = "Please input your name: "
+                conn.send(Namemsg.encode(FORMAT))
+                name1 = conn.recv(SIZE).decode(FORMAT)
+                Namemsg = f"hello {name1}"
+                conn.send(Namemsg.encode(FORMAT))
         if msg == DISCONNECT_MSG:
             connected = False
         
